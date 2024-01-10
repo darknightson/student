@@ -1,0 +1,93 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout1}">
+
+<head>
+    <title></title>
+
+    <script>
+        $(document).ready(function() {
+            var table = $('#userTable').DataTable({
+                serverSide: true,
+                processing: true,
+                pageLength: 10,
+                searching: false,
+                dom: 'lfrtip',
+                ajax: {
+                    url: '/api/v1/student',
+                    dataSrc: 'data',
+                    type: 'GET',
+                    data: function(d) {
+                        let pageNumber = d.start / d.length;
+                        return {
+                            "draw": d.draw,
+                            "page": pageNumber,
+                            "size": d.length,
+                            "departmentName": $('#departmentName').val(),
+                            "memberName": $('#studentName').val()
+                        };
+                    }
+                },
+                columns: [
+                    { data: 'studentId' },
+                    { data: 'memberName' },
+                    { data: 'memberEmail' },
+                    { data: 'departmentName' },
+                    { data: 'departmentCode' },
+                    { data: 'createdAt' }
+                ],
+                columnDefs: [
+                    {
+                        targets: 0,
+                        render: function(data, type, row) {
+                            return '<a href="/student/detail/' + row.studentId + '">' + data + '</a>';
+                        }
+                    }
+                ]
+            });
+
+            $('#searchBtn').on('click', function() {
+                table.ajax.reload();
+            });
+        });
+    </script>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="container-fluid">
+        <h1 class="mt-4">Main View</h1>
+        <ol class="breadcrumb mb-4">
+            <li class="breadcrumb-item">사용자 조회</li>
+        </ol>
+
+        <!-- 조회 조건 입력 필드 -->
+        <div>
+            <label for="departmentName">학과 명:</label>
+            <input type="text" id="departmentName">
+
+            <label for="studentName">학생 명:</label>
+            <input type="text" id="studentName">
+
+            <button id="searchBtn">조회</button>
+        </div>
+
+        <div class="card mb-4">
+            <div class="card-body">
+                <table id="userTable" class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th>학생 ID</th>
+                        <th>학생 명</th>
+                        <th>이메일</th>
+                        <th>학과 명</th>
+                        <th>학과 코드</th>
+                        <th>등록일</th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,32 @@
+server:
+  port: 8080
+  address: a.application.com
+
+spring:
+  config:
+    activate:
+      on-profile: test
+  datasource:
+    url: jdbc:h2:tcp://localhost/./student
+    username: sa
+    password: 1
+    driver-class-name: org.h2.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        format_sql: true
+        default_batch_fetch_size: 100
+
+  devtools:
+    livereload:
+      enabled: false
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+
+logging.level:
+  org.hibernate.SQL: debug
+  org.hibernate.type: trace
