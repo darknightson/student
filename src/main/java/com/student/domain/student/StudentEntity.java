@@ -20,7 +20,7 @@ import java.util.List;
 @Getter
 @Table(name = "student")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class StudentEntity extends BaseEntity implements Serializable {
+public class  StudentEntity extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
